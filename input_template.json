@@ -1,0 +1,11 @@
+{
+  "wechat": [
+    {
+      "corp_id": "id",
+      "corp_secret": "sk",
+      "division_id": 1,
+      "app_id": 1,
+      "msg": "t1"
+    }
+  ]
+}

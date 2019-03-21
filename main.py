@@ -71,18 +71,15 @@ def push_to_dingding(data_content):
 
 
 def run():
-    if input_argv == "create_dingding_chat_room":
-        print(create_dingding_chat())
-    else:
-        input_dict = json.loads(sys.argv[1])
+    input_dict = json.loads(sys.argv[1])
 
-        for k, v in input_dict.items():
-            if k == "wechat":
-                for i in v:
-                    push_to_wechat(i)
-            else:
-                for i in v:
-                    push_to_dingding(i)
+    for k, v in input_dict.items():
+        if k == "wechat":
+            for i in v:
+                push_to_wechat(i)
+        else:
+            for i in v:
+                push_to_dingding(i)
 
 
 if __name__ == "__main__":

@@ -3,20 +3,21 @@ import time
 import requests
 import json
 
-tmp_file_path = os.getcwd() + '/zabbix_alarm_sender.tmp'
+tmp_file_path = os.getcwd() + '/alarm_sender.tmp'
 
 # 获取当前的时间戳
 timestamp_now = round(time.time() * 1000)
 
 
 def write_tmp(corp_id, new_token):
-    r_tmp = open(tmp_file_path, 'w+')
-    tmp_content = r_tmp.readline()
-    tmp_dict = dict()
+    r_tmp = open(tmp_file_path, 'r')
+    tmp_content = r_tmp.read()
+    r_tmp.close()
+
     try:
         tmp_dict = json.loads(tmp_content)
     except json.decoder.JSONDecodeError:
-        pass
+        tmp_dict = dict()
 
     if "wechat" in tmp_dict.keys():
         try:
@@ -28,6 +29,7 @@ def write_tmp(corp_id, new_token):
     else:
         tmp_dict["wechat"] = {corp_id: {"timestamp": timestamp_now, "token": new_token}}
 
+    r_tmp = open(tmp_file_path, 'w')
     r_tmp.write(json.dumps(tmp_dict))
     r_tmp.close()
 
@@ -68,7 +70,7 @@ class EnterpriseWeChat:
     def get_token(self):
         get_access_token_url = 'https://qyapi.weixin.qq.com/cgi-bin/gettoken?corpid=' \
                                + self.corp_id + '&corpsecret=' + self.corp_secret
-        r = requests.get(get_access_token_url, timeout=5, max_retries=5)
+        r = requests.get(get_access_token_url, timeout=5)
         r_content = r.content.decode()
         r_content_dict = eval(r_content)
         errmsg = r_content_dict['errmsg']
@@ -91,7 +93,7 @@ class EnterpriseWeChat:
         }
         msg_content = json.dumps(post_content, ensure_ascii=False)
         url = 'https://qyapi.weixin.qq.com/cgi-bin/message/send?access_token=' + str(access_token)
-        r = requests.post(url, msg_content.encode('utf-8'), timeout=5, max_retries=5)
+        r = requests.post(url, msg_content.encode('utf-8'), timeout=5)
         r_content = r.content.decode()
 
         output_content = time.strftime("%Y-%m-%d %H:%M:%S", time.gmtime()) + ' wechat ' + r_content
@@ -102,7 +104,6 @@ class EnterpriseWeChat:
     @staticmethod
     def get_division(access_token):
         get_wc_division = 'https://qyapi.weixin.qq.com/cgi-bin/department/list?access_token=' + str(access_token)
-        r = requests.get(get_wc_division, timeout=5, max_retries=5)
+        r = requests.get(get_wc_division, timeout=5)
         r_content = r.content.decode()
-        content_dict = json.loads(r_content)
-        return json.dumps(content_dict, indent=2, sort_keys=True)
+        return r_content

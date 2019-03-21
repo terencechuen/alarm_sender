@@ -1,11 +1,19 @@
 {
+  "dingding": [
+    {
+      "appkey": "1",
+      "appsecret": "1",
+      "chatid": "1",
+      "msg": "1"
+    }
+  ],
   "wechat": [
     {
-      "corp_id": "id",
-      "corp_secret": "sk",
-      "division_id": 1,
-      "app_id": 1,
-      "msg": "t1"
+      "corp_id": "1",
+      "corp_secret": "1",
+      "division_id": "1",
+      "app_id": "1",
+      "msg": "1"
     }
   ]
 }

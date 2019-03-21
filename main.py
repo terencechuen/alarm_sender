@@ -79,12 +79,10 @@ def run():
         for k, v in input_dict.items():
             if k == "wechat":
                 for i in v:
-                    push_content = push_to_wechat(i)
-                    print(push_content)
+                    push_to_wechat(i)
             else:
                 for i in v:
-                    push_content = push_to_dingding(i)
-                    print(push_content)
+                    push_to_dingding(i)
 
 
 if __name__ == "__main__":

@@ -20,7 +20,7 @@ def write_tmp(app_key, new_token):
 
     try:
         tmp_dict = json.loads(tmp_content)
-    except json.decoder.JSONDecodeError:
+    except Exception:
         tmp_dict = dict()
 
     if "ali" in tmp_dict.keys():
@@ -72,7 +72,7 @@ class AliDingTalk:
     def get_token(self):
         url = "https://oapi.dingtalk.com/gettoken?appkey=" + self.appkey + "&appsecret=" + self.appsecret
         r = requests.get(url)
-        r_content = r.content
+        r_content = r.content.decode()
         r_dict = json.loads(r_content)
 
         if r_dict["errcode"] == 0:

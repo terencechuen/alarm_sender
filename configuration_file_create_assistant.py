@@ -57,7 +57,7 @@ def get_dingding_info():
         print("\n# 若无请留空并回车，接下来将引导您创建一个告警群")
         chat_room_id = input()
 
-        if chat_room_id is None:
+        if chat_room_id is '':
 
             print("\n# 请输入告警群聊的名称，长度限制为1至20个字符：")
             chat_room_name = input()
@@ -93,7 +93,12 @@ def get_dingding_info():
             ali_main = AliDingTalk(app_key, app_secret)
             ali_token = ali_main.get_token()
 
-            url = 'https://oapi.dingtalk.com/chat/create?access_token=' + ali_token
+            if ali_token[0]:
+                url = 'https://oapi.dingtalk.com/chat/create?access_token=' + ali_token[1]
+            else:
+                output_content = "# 您输入的信息有误，阿里钉钉返回了错误信息，请留意告警信息内容：" + ali_token[1]
+                return output_content
+
             post_content = {
                 "name": chat_room_name,
                 "owner": chat_room_owner,
@@ -148,10 +153,10 @@ def run():
     print("# 2：不是")
     add_dingding = input()
 
-    if add_wechat == 1:
+    if add_wechat == "1":
         wechat_config_content = get_wechat_info()
         config_dict['wechat'] = wechat_config_content
-    elif add_dingding == 1:
+    elif add_dingding == "1":
         dingding_config_content = get_dingding_info()
         config_dict['dingding'] = dingding_config_content
     else:
